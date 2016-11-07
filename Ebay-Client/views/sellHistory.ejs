@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My eBay All Selling</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+</head>
+
+<body style="background-color:#f5f5f5">
+<a href="/homepage">
+    <img width="250" height="200" style="clip:rect(47px, 118px, 95px, 0px); position:absolute; top:-40px;left:20px" alt="" src="http://ir.ebaystatic.com/rs/v/fxxj3ttftm5ltcqnto1o4baovyl.png" id="gh-logo">
+</a>
+<br>
+<br>
+<br>
+<div style="margin-left:20px">
+    Hi, <%= user.user_firstName %> <%= user.user_lastName %>!
+</div>
+<br>
+<div class="panel panel-primary" style="margin-left:20px;width:90%">
+    <div class="panel-heading" style="background-color:#747b82">
+        <h3 class="panel-title">Sell History</h3>
+    </div>
+    <div class="panel-body" style="margin-left:20px">
+        <% if (soldInfo && soldInfo.length > 0 ) { for(var i=0; i<soldInfo.length; i++) { %>
+        <p><%= i+1 %>>. You sold items worth : $<%= soldInfo[i].product_price %> on <%= soldInfo[i].transactionTime%></p>
+        <%}} else { %>
+        <p> You haven't made any sales.</p>
+        <%}%>
+    </div>
+</div>
+
+<div style="margin-left:20px;">
+    <a href="/homepage" type="button" style="background-color:#747b82" class="btn btn-primary">Homepage</a>
+</div>
+<br>
+<br>
+</body>
+</html>

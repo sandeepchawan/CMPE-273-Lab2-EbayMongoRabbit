@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Electronics, Cars, Fashion and More | eBay</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/products.css' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+    <meta http-equiv="Cache-Control"
+          content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <script>
+        $(function(){
+            $(".category").click(function(){
+                var catid = $(this).attr("id");
+                $.ajax({
+                    url: "/listproducts/"+catid,
+                    type: "get",
+                    success : function(data){
+                        var content = "";
+                        console.log(data.length);
+                        for(var i= 0; i < data.length; i++){
+                            content += "<a href=";
+                            content += "/showproduct/"+data[i]._id +">";
+                            content +=data[i].product_name+"</a><br>";
+                        }
+                        console.log(content);
+                        $("#content_"+catid).html(content);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+
+<body style="background-color:#f5f5f5">
+
+<% include ./navheader.ejs %>
+
+<div>
+    <a href="/homepage"><img width="140" height="200" style="clip:rect(47px, 118px, 95px, 0px); top:35px;left:50px;" alt="" src="/images/ebaylogo.png" id="gh-logo"></a>
+    <form class="navbar-form navbar-left" role="search" style="top:60px;left:270px;margin-left:140px;margin-top:-42px" method = "post" action = "/search">
+        <div class="form-group" >Search products
+            <input name="productName" type="text" class="form-control" size="60" placeholder="Search">
+        </div>
+        <select class="dropdown" name="cat" id="options" style="width:170px; height: 35px">
+
+            <% for(var i = 0; i < categories.length;i++){%>
+            <option value="<%= categories[i].category_id %>"><%= categories[i].category_name %></option>
+            <% } %>
+        </select>
+
+        <button type="submit" class="btn btn-default">Search</button>
+    </form>
+</div>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+
+                <% for(var i = 0; i < categories.length;i++){%>
+                <li class="dropdown">
+                    <a class="category" id="<%= categories[i].category_id %>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        <%= categories[i].category_name %>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#" id="content_<%= categories[i].category_id %>"></a></li>
+                    </ul>
+
+                </li>
+                <% } %>
+            </ul>
+        </div>
+
+    </div>
+
+</nav>
+
+<div class="container">
+    <% for(var i = 0; i < products.length;i++){%>
+    <div class="spe-prods">
+        <div class="mainbox">
+            <h3><%= products[i].product_name%></h3>
+            <%= products[i].product_desc%>
+        </div>
+
+        <div class="price-big">
+            <div>
+                <div class="floatting-price">
+                    <h4>$<%=products[i].product_price%></h4>
+                </div>
+            </div>
+            <div class="ordersection">
+                <a href="/showproduct/<%=products[i]._id%>" class="buybtn">Show more</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <% } %>
+</div>
+</body>
